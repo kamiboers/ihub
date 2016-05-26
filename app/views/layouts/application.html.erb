@@ -7,11 +7,14 @@
 	<%= csrf_meta_tags %>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 	<link rel="stylesheet" href="app/assets/stylesheets/custom.css">
+	<link rel="stylesheet" href="app/assets/stylesheets/animate.css">
+
 </head>
 <body>
 
 	<%= render partial: "partials/navbar" %> 
 	<%= render partial: "partials/flashes" %>
+
 
 	<div class="col-md-9">
 		<%= yield %>

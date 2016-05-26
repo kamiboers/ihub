@@ -1,9 +1,12 @@
 <%= render partial: "partials/search" %>
 <div class="bar-list well">
 	<% if current_user %>
+	<h3>Stats:</h3>
 <%= current_user.follower_count %> Followers <br>
 Following <%= current_user.following_count %><br>
 <%= current_user.repo_count %> Repos<br>
+Starred Repos: <%= @starred %><br>
+Organizations: <%= @orgs %><br>
 <br>
 Rate Limit: <%= @rate_limit %><br>
 Search Limit: <%= @search_limit %>

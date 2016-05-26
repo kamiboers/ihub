@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  root 'pages#index'
+  root 'pages#dashboard'
+
+  get '/index', to: 'pages#index', as: 'index'
   get '/dashboard', to: 'pages#dashboard', as: 'dashboard'
 
   get '/auth/github/callback', to: 'sessions#create'

@@ -117,6 +117,7 @@ div.login-float {
 	margin-left: -250px;
 	opacity: 0.8;
 	border-radius: 20px;
+	z-index: 999;
 }
 
 div.sidebar {
@@ -158,8 +159,17 @@ div.bar-list {
 }
 
 div.repo-list {
-	margin-left: 2em; 
+	/*margin-left: 2em; */
 	max-height: 500px;
 	overflow-y: scroll;
 	overflow-x: hidden;
+}
+
+div.well {
+	background-color: #E7F7F9;
+}
+
+a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+ background-color: #31649b;
+ border-color: #31649b;
 }

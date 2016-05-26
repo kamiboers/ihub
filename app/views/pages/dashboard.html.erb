@@ -1,9 +1,30 @@
-<div class="col-md-4">
-<h2>Repositories:</h2>
+<div class="col-md-4 list-group">
+<a href="#" class="list-group-item active"><h2>Repositories:</h2></a>
 <div class="repo-list">
 	<% @repos.each do |repo| %>
-	<h3><%= link_to repo.name, repo.html_url %></h3>
-		updated <%= time_ago_in_words(repo.updated_at) %> ago<br>
+	<a href="<%= repo.html_url %>" class="list-group-item"><h3><%= repo.name %></h3>
+		updated <%= time_ago_in_words(repo.updated_at) %> ago</a>
+<% end %>
+</div>
+</div>
+
+<div class="col-md-4 list-group">
+<a href="#" class="list-group-item active"><h2>Pull Requests:</h2></a>
+<div class="repo-list">
+	<% @pulls.each do |pull| %>
+	<a href="<%= pull['html_url'] %>" class="list-group-item"><b><%= pull['title'] %></b>
+		<%= pull['state'] %><br>
+		updated <%= time_ago_in_words(pull['updated_at']) %> ago</a>
+<% end %>
+</div>
+</div>
+
+<div class="col-md-4 list-group">
+<a href="#" class="list-group-item active"><h2>Repositories:</h2></a>
+<div class="repo-list">
+	<% @repos.each do |repo| %>
+	<a href="<%= repo.html_url %>" class="list-group-item"><h3><%= repo.name %></h3>
+		updated <%= time_ago_in_words(repo.updated_at) %> ago</a>
 <% end %>
 </div>
 </div>
