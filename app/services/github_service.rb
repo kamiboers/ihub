@@ -1,60 +1,68 @@
 class GithubService
 
-  attr_reader :pulls
+  attr_reader :user, :token, :stats
 
-  def initialize
+  def initialize(username, token)
     @connection = Faraday.new(url: "https://api.github.com")
-    @pulls = []
+    @user = username
+    @token = token
+    @stats = StatStorer.new(username)
   end
 
-  def get_followers_data(username)
-    response = @connection.get "/users/#{username}/followers"
-    results = JSON.parse(response.body)
+  def get_followers_data
+    results = parse(@connection.get "/users/#{user}/followers")
     results.map { |raw_follower|
       OpenStruct.new(raw_follower)
     }
   end
 
-  def get_dashboard_data(token)
-    response = @connection.get "/user", access_token: token
-    results = JSON.parse(response.body)
-  end
-
-  def get_repo_data(token, username)
-    response = @connection.get "/user/repos", access_token: token, sort: 'updated'
-    results = JSON.parse(response.body)
+  def get_repo_data
+    results = parse(@connection.get "/user/repos", access_token: token, sort: 'updated')
     results.map { |repo|
-      get_pull_data(repo['name'], token, username)
       OpenStruct.new(repo)
     }
   end
 
-  def get_pull_data(repo, token, username)
-  response = @connection.get "/repos/#{username}/#{repo}/pulls", access_token: token, sort: 'updated', state: 'all'
-  results = JSON.parse(response.body)
-  @pulls << results
+  def get_pull_data
+    repos = get_repo_data
+    pulls = repos.inject([]) do |repo_pulls, repo|
+      repo_pulls << parse(@connection.get "/repos/#{user}/#{repo.name}/pulls", access_token: token, sort: 'updated', state: 'all')
+    end
+    pulls = pulls.flatten.select { |pull| pull if !pull.empty? }
+    pulls = pulls.select { |pull| pull if pull[:title] != nil }
   end
 
-  def rate_limit(token)
-    response = @connection.get "/rate_limit", access_token: token
-    results = JSON.parse(response.body)['rate']
-    results['remaining']/(results['limit']).to_f
+  def get_commit_data
+    repos = get_repo_data
+    commits = repos.inject([]) do |repo_commits, repo|
+      repo_commits << parse(@connection.get "/repos/#{user}/#{repo.name}/commits", access_token: token, sort: 'updated', state: 'all')
+    end
+    commits = commits.flatten.select { |commit| commit if !commit.empty? }
+    commits = commits.select { |commit| commit if commit[:commit] != nil }
   end
 
-  def search_limit(token)
-     response = @connection.get "/rate_limit", access_token: token
-    results = JSON.parse(response.body)['resources']['search']
-    results['remaining']/(results['limit']).to_f
+  def rate_limit
+    results = parse(@connection.get "/rate_limit", access_token: token)[:rate]
+    results[:remaining]/(results[:limit]).to_f
   end
 
-  def starred_repos(token)
-    response = @connection.get "https://api.github.com/users/kamiboers/starred", access_token: token
-    results = JSON.parse(response.body)
+  def search_limit
+    results = parse(@connection.get "/rate_limit", access_token: token)[:resources][:search]
+    results[:remaining]/(results[:limit]).to_f
+  end
+
+  def starred_repos
+    parse(@connection.get "https://api.github.com/users/#{user}/starred", access_token: token)
   end
   
-  def organizations(token)
-    response = @connection.get "https://api.github.com/users/kamiboers/orgs", access_token: token
-    results = JSON.parse(response.body)
+  def organizations
+    response = parse(@connection.get "https://api.github.com/users/#{user}/orgs", access_token: token)
+  end
+
+  private
+
+  def parse(input)
+    JSON.parse(input.body, symbolize_names: true)
   end
 
 end

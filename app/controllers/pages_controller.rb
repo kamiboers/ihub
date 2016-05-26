@@ -10,18 +10,17 @@ class PagesController < ApplicationController
   def dashboard
     redirect_to index_path if !current_user
     if current_user
-      gs = GithubService.new
-      @repos = gs.get_repo_data(current_user.token, current_user.username)
-      @rate_limit = gs.rate_limit(current_user.token)
-      @search_limit = gs.search_limit(current_user.token)
-      @followers = gs.get_followers_data(current_user.username)
-      pulls = gs.pulls.flatten.select { |pull| !pull.empty? }
-      @pulls = pulls.select { |pull| pull['title'] != nil }
-      @starred = gs.starred_repos(current_user.token).count
-      @orgs = gs.organizations(current_user.token).count
+      gs = GithubService.new(current_user.username, current_user.token)
+      @repos = gs.get_repo_data
+      @rate_limit = gs.rate_limit
+      @search_limit = gs.search_limit
+      @followers = gs.get_followers_data
+      @pulls = gs.get_pull_data
+      @starred = gs.starred_repos.count
+      @orgs = gs.organizations.count
+      @commits = gs.get_commit_data
       # @events = gs.get_events(current_user.token, current_user.username)
     end
-
 
   end
 
