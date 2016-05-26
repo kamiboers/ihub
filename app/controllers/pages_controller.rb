@@ -1,10 +1,7 @@
 class PagesController < ApplicationController
   before_action :set_auth
   def index
-    if current_user
-      gs = GithubService.new
-      gs.get_dashboard_data(current_user.token)
-    end
+    redirect to dashboard_path if current_user
   end
 
   def dashboard
