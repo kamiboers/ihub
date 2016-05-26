@@ -6,13 +6,19 @@ class GithubService
     @connection = Faraday.new(url: "https://api.github.com")
     @user = username
     @token = token
-    @stats = StatStorer.new(username)
   end
 
   def get_followers_data
-    results = parse(@connection.get "/users/#{user}/followers")
+    results = parse(@connection.get "/users/#{user}/followers", access_token: token)
     results.map { |raw_follower|
       OpenStruct.new(raw_follower)
+    }
+  end
+
+  def get_followers_activity
+    followers = get_followers_data
+    followers.inject([]) { |actions, follower| 
+      actions << parse(@connection.get "/users/#{follower.login}/events", access_token: token)
     }
   end
 

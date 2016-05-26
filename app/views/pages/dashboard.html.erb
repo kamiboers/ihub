@@ -23,7 +23,7 @@
 <a href="#" class="list-group-item active"><h2>Commits:</h2></a>
 <div class="repo-list">
 	<% @commits.each do |commit| %>
-	<a href="<%= commit[:commit][:url] %>" class="list-group-item"><b><%= commit[:commit][:message] %></b>
+	<a href="<%= commit[:commit][:html_url] %>" class="list-group-item"><b><%= commit[:commit][:message] %></b>
 		updated <%= time_ago_in_words(commit[:commit][:author][:date]) %> ago</a>
 <% end %>
 </div>

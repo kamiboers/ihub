@@ -1,0 +1,9 @@
+<div class="col-md-8 list-group">
+<a href="#" class="list-group-item active"><h2>Follower Events:</h2></a>
+<div class="repo-list">
+	<% @events.each do |event| %>
+	<a href="<%= event.html_url %>" class="list-group-item"><h3><%= event.name %></h3>
+		updated <%= time_ago_in_words(event.updated_at) %> ago</a>
+<% end %>
+</div>
+</div>
