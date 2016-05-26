@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Ihub</title>
+	<%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+	<%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+	<%= csrf_meta_tags %>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link rel="stylesheet" href="app/assets/stylesheets/custom.css">
+</head>
+<body>
+
+	<%= render partial: "partials/navbar" %> 
+	<%= render partial: "partials/flashes" %>
+
+	<div class="col-md-9">
+		<%= yield %>
+	</div>
+
+	<div class="container-fluid col-md-3 sidebar">	
+	<%= render partial: "partials/sidebar" %>
+	</div>
+
+</body>
+</html>

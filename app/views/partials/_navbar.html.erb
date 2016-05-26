@@ -1,0 +1,23 @@
+<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+				</button>
+				<div class="navbar-brand imithub"><%= link_to root_path do %><%= image_tag('bestopus.png', width: '40', class: "navbar-img") %>ImitHub<% end %></div>
+			</div>
+
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+					<% if current_user %>
+					<li>Signed in as <%= current_user.username %>
+						<div class="circle-avatar" style="background-image:url(<%= current_user.image_path %>)"></div><br>
+					<li><%= button_to "Sign Out", 'logout', method: :delete, class: "btn btn-info log-out btn-xs" %></li>
+					<% else %>
+					<li><%= button_to 'auth/github',  class: "btn btn-info log-in" do %>Sign in with <%= image_tag('octocat.png', width: '45', height: '40') %><% end %></li>
+					<% end %>
+				</ul>
+			</div>
+		</div>
+	</nav>
