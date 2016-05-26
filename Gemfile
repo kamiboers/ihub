@@ -33,6 +33,7 @@ gem 'figaro'
 gem 'omniauth-github'
 gem 'simplecov', :require => false, :group => :test
 gem 'faraday'
+gem 'shoulda-matchers', '~> 3.1'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -46,6 +47,7 @@ group :development, :test do
   gem 'vcr'
   gem 'webmock'
   gem 'pry-rails'
+
 end
 
 group :development do
