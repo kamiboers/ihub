@@ -2,7 +2,7 @@
 <div class="bar-list well">
 	<% if current_user %>
 	<h3>Stats:</h3>
-<%= current_user.follower_count %> Followers <br>
+<%= link_to "#{current_user.follower_count} Followers", followers_path %> <br>
 Following <%= current_user.following_count %><br>
 <%= current_user.repo_count %> Repos<br>
 Starred Repos: <%= @starred %><br>

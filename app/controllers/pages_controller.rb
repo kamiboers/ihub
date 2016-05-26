@@ -1,10 +1,7 @@
 class PagesController < ApplicationController
   before_action :set_auth
   def index
-    if current_user
-      gs = GithubService.new
-      gs.get_dashboard_data(current_user.token)
-    end
+    redirect to dashboard_path if current_user
   end
 
   def dashboard
@@ -19,7 +16,11 @@ class PagesController < ApplicationController
       @starred = gs.starred_repos.count
       @orgs = gs.organizations.count
       @commits = gs.get_commit_data
-      # @events = gs.get_events(current_user.token, current_user.username)
+    end
+
+    def followers
+      gs = GithubService.new(current_user.username, current_user.token)
+      @events = gs.get_followers_activity.flatten
     end
 
   end
